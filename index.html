@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Calendly Widget CSS -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script>
@@ -17,12 +18,19 @@
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
               display: ['Space Grotesk', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
             },
             colors: {
-              primary: '#f97316', // Orange 500 (Zapier/Action)
-              secondary: '#3b82f6', // Blue 500 (Trust/Tech)
-              accent: '#8b5cf6', // Violet 500 (Integration)
-              dark: '#0f172a', // Slate 900
+              primary: '#06b6d4', // Cyan 500 (Future/Tech)
+              secondary: '#d946ef', // Fuchsia 500 (Creative/AI)
+              accent: '#8b5cf6', // Violet 500 (Depth)
+              dark: '#020617', // Deep Slate/Black
+            },
+            backgroundImage: {
+              'grid-pattern': "linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px)",
+            },
+            animation: {
+              'spin-slow': 'spin 8s linear infinite',
             }
           }
         }
@@ -33,22 +41,30 @@
         scroll-padding-top: 85px; /* Ensures hash links land below the fixed header */
       }
       body {
-        background-color: #020617; /* Slate 950 */
-        color: #f8fafc;
+        background-color: #0f0b1e; /* Deep Violet Black */
+        background-image: 
+          radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.08), transparent 25%), 
+          radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08), transparent 25%);
+        color: #e2e8f0;
       }
       /* Custom scrollbar */
       ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0f172a;
+        background: #0f0b1e;
       }
       ::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 5px;
+        background: linear-gradient(to bottom, #06b6d4, #d946ef);
+        border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
+        background: #d946ef;
+      }
+      .glass-panel {
+        background: rgba(15, 11, 30, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
     </style>
   <script type="importmap">
@@ -63,10 +79,24 @@
   }
 }
 </script>
+<!-- Babel for runtime TSX compilation -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Process Shim for Environment Variables -->
+<script>
+  window.process = {
+    env: {
+      // Netlify will inject variables here during build if configured, 
+      // or you can leave this empty and use a build script to replace it.
+      // This prevents "ReferenceError: process is not defined" in the browser.
+      API_KEY: "" 
+    }
+  };
+</script>
 <!-- Calendly Widget Script -->
 <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </head>
   <body>
     <div id="root"></div>
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
   </body>
 </html>
