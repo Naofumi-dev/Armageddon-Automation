@@ -85,10 +85,8 @@
 <script>
   window.process = {
     env: {
-      // Netlify will inject variables here during build if configured, 
-      // or you can leave this empty and use a build script to replace it.
-      // This prevents "ReferenceError: process is not defined" in the browser.
-      API_KEY: "" 
+      // Netlify build command will replace '__NETLIFY_API_KEY__' with the actual value.
+      API_KEY: "__NETLIFY_API_KEY__" 
     }
   };
 </script>
