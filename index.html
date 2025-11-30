@@ -21,10 +21,10 @@
               mono: ['Fira Code', 'monospace'],
             },
             colors: {
-              primary: '#06b6d4', // Cyan 500 (Future/Tech)
-              secondary: '#d946ef', // Fuchsia 500 (Creative/AI)
-              accent: '#8b5cf6', // Violet 500 (Depth)
-              dark: '#020617', // Deep Slate/Black
+              primary: '#f97316', // Orange 500
+              secondary: '#3b82f6', // Blue 500
+              accent: '#8b5cf6', // Violet 500
+              dark: '#020617', // Deep Slate
             },
             backgroundImage: {
               'grid-pattern': "linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px)",
@@ -55,11 +55,11 @@
         background: #0f0b1e;
       }
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #06b6d4, #d946ef);
+        background: linear-gradient(to bottom, #f97316, #3b82f6);
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #d946ef;
+        background: #f97316;
       }
       .glass-panel {
         background: rgba(15, 11, 30, 0.6);
@@ -85,8 +85,8 @@
 <script>
   window.process = {
     env: {
-      // Netlify build command will replace '__NETLIFY_API_KEY__' with the actual value.
-      API_KEY: "__NETLIFY_API_KEY__" 
+      // Vercel build script will replace '__API_KEY__' with the actual environment variable value.
+      API_KEY: "__API_KEY__" 
     }
   };
 </script>
