@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Workflow, FileText, Phone, Zap, Share2, Layers, MessageSquare, Briefcase, X, ZoomIn, ArrowRight, ExternalLink, PenTool, Activity } from 'lucide-react';
-import { Project } from '../types';
+import { Project } from '../types.ts';
 
 // INSTRUCTIONS FOR IMAGES:
 // Images are hosted on GitHub. If you need to change them, push new images to your repo 

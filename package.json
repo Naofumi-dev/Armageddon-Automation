@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "Portfolio website",
   "scripts": {
-    "build": "mkdir -p dist && cp -R * dist/ 2>/dev/null || : && sed -i \"s|__API_KEY__|$API_KEY|g\" dist/index.html"
+    "dev": "npx serve .",
+    "build": "mkdir -p dist && cp index.html index.tsx App.tsx types.ts metadata.json dist/ && cp -r services components dist/ && sed -i \"s|__API_KEY__|$API_KEY|g\" dist/index.html"
+  },
+  "dependencies": {
+    "@google/genai": "^0.1.1",
+    "framer-motion": "^11.0.8",
+    "lucide-react": "^0.344.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

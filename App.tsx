@@ -1,15 +1,15 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import TechStack from './components/TechStack';
-import ChatBot from './components/ChatBot';
-import About from './components/About';
-import WorkHistory from './components/WorkHistory';
-import Testimonials from './components/Testimonials';
+import Navbar from './components/Navbar.tsx';
+import Hero from './components/Hero.tsx';
+import Services from './components/Services.tsx';
+import Projects from './components/Projects.tsx';
+import Contact from './components/Contact.tsx';
+import Footer from './components/Footer.tsx';
+import TechStack from './components/TechStack.tsx';
+import ChatBot from './components/ChatBot.tsx';
+import About from './components/About.tsx';
+import WorkHistory from './components/WorkHistory.tsx';
+import Testimonials from './components/Testimonials.tsx';
 
 function App() {
   return (

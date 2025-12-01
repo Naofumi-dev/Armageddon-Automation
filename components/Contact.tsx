@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Sparkles, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
-import { analyzeProjectInquiry } from '../services/geminiService';
-import { ContactFormState, AIAnalysisResult } from '../types';
+import { analyzeProjectInquiry } from '../services/geminiService.ts';
+import { ContactFormState, AIAnalysisResult } from '../types.ts';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState<ContactFormState>({

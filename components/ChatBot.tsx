@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Loader2, User, Bot, Calendar } from 'lucide-react';
-import { generateChatResponse } from '../services/geminiService';
-import { ChatMessage } from '../types';
+import { generateChatResponse } from '../services/geminiService.ts';
+import { ChatMessage } from '../types.ts';
 
 declare global {
   interface Window {

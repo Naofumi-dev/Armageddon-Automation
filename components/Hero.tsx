@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Search, Bot, Zap, Database, Globe, Calendar } from 'lucide-react';
+import { ArrowRight, Search, Bot, Zap, Database, Globe, Calendar, Cpu } from 'lucide-react';
 
 // Declare Calendly on window to avoid TS errors
 declare global {
@@ -8,6 +8,53 @@ declare global {
     Calendly: any;
   }
 }
+
+// --- DEFINE FLOATING CARD COMPONENT FIRST ---
+const FloatingCard = ({ x, label, icon: Icon, color, progress, status, bars, code }: any) => {
+  const colorClasses: Record<string, string> = {
+    orange: 'text-orange-400 bg-orange-500/10 border-orange-500/20',
+    blue: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
+    cyan: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20',
+    purple: 'text-violet-400 bg-violet-500/10 border-violet-500/20',
+  };
+
+  return (
+    <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} className={`absolute ${x} bg-[#0f172a]/90 backdrop-blur-md p-4 rounded-lg border border-slate-800 shadow-2xl z-20 w-44`}>
+      <div className="flex items-center gap-3 mb-3">
+        <div className={`p-1.5 rounded-md ${colorClasses[color]?.split(' ')[1] || ''}`}>
+          <Icon className={`w-3.5 h-3.5 ${colorClasses[color]?.split(' ')[0] || ''}`} />
+        </div>
+        <span className="font-mono font-bold text-white text-[10px] tracking-wider">{label}</span>
+      </div>
+      
+      {progress && (
+        <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+          <motion.div className="h-full bg-orange-500" initial={{ width: "0%" }} animate={{ width: `${progress}%` }} transition={{ duration: 1.5, delay: 1 }} />
+        </div>
+      )}
+      
+      {status && status.map((s: string, i: number) => (
+        <div key={i} className="flex items-center gap-2 text-[10px] text-slate-400 bg-slate-900/50 p-1 mb-1 rounded border border-white/5">
+          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> {s}
+        </div>
+      ))}
+
+      {bars && (
+        <div className="flex justify-between items-end h-6 gap-1">
+          {bars.map((h: number, i: number) => (
+            <motion.div key={i} className="w-full bg-cyan-500/50 rounded-t-[2px]" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ duration: 1, delay: 1 + (i * 0.1) }} />
+          ))}
+        </div>
+      )}
+
+      {code && (
+        <div className="text-[9px] font-mono text-slate-400 bg-black/40 p-2 rounded border border-white/5">
+          {code}
+        </div>
+      )}
+    </motion.div>
+  );
+};
 
 const Hero: React.FC = () => {
 
@@ -96,168 +143,103 @@ const Hero: React.FC = () => {
               className="relative w-full h-full max-w-[500px]"
             >
               {/* Central Connection Lines (Abstract Node Graph) */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" overflow="visible">
+              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 500" overflow="visible">
                 {/* Lines connecting the central hub to floating cards */}
                 <motion.path 
-                  d="M250 250 L100 150" 
+                  d="M250 250 L100 120" 
                   stroke="url(#grad1)" 
-                  strokeWidth="2" 
+                  strokeWidth="1" 
                   fill="none"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.5 }}
+                  animate={{ pathLength: 1, opacity: 0.3 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
                 />
                 <motion.path 
-                  d="M250 250 L400 150" 
+                  d="M250 250 L400 120" 
                   stroke="url(#grad2)" 
-                  strokeWidth="2" 
+                  strokeWidth="1" 
                   fill="none"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.5 }}
+                  animate={{ pathLength: 1, opacity: 0.3 }}
                   transition={{ duration: 1.5, delay: 0.7 }}
                 />
                 <motion.path 
                   d="M250 250 L120 380" 
                   stroke="url(#grad3)" 
-                  strokeWidth="2" 
+                  strokeWidth="1" 
                   fill="none"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.5 }}
+                  animate={{ pathLength: 1, opacity: 0.3 }}
                   transition={{ duration: 1.5, delay: 0.9 }}
                 />
                 <motion.path 
                   d="M250 250 L380 380" 
                   stroke="url(#grad4)" 
-                  strokeWidth="2" 
+                  strokeWidth="1" 
                   fill="none"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 0.5 }}
+                  animate={{ pathLength: 1, opacity: 0.3 }}
                   transition={{ duration: 1.5, delay: 1.1 }}
                 />
                 
+                {/* Data Packets (Mini CPUs traveling) */}
+                <motion.g>
+                  <circle r="14" fill="#09090b" stroke="#f97316" strokeWidth="1" strokeDasharray="3 2">
+                     <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="4s" repeatCount="indefinite" />
+                  </circle>
+                  <path d="M-6 -6 H6 V6 H-6 Z M-4 -8 V-6 M4 -8 V-6 M-4 6 V8 M4 6 V8 M-8 -4 H-6 M-8 4 H-6 M6 -4 H8 M6 4 H8" fill="#f97316" transform="scale(0.8)"/>
+                  <animateMotion dur="3s" repeatCount="indefinite" path="M250 250 L100 120" keyPoints="0;1" keyTimes="0;1" calcMode="linear" />
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite" />
+                </motion.g>
+
+                <motion.g>
+                  <circle r="14" fill="#09090b" stroke="#3b82f6" strokeWidth="1" strokeDasharray="3 2">
+                     <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="4s" repeatCount="indefinite" />
+                  </circle>
+                  <path d="M-6 -6 H6 V6 H-6 Z M-4 -8 V-6 M4 -8 V-6 M-4 6 V8 M4 6 V8 M-8 -4 H-6 M-8 4 H-6 M6 -4 H8 M6 4 H8" fill="#3b82f6" transform="scale(0.8)"/>
+                  <animateMotion dur="4s" repeatCount="indefinite" path="M250 250 L400 120" keyPoints="0;1" keyTimes="0;1" calcMode="linear" />
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="4s" repeatCount="indefinite" />
+                </motion.g>
+
+                <motion.g>
+                  <circle r="14" fill="#09090b" stroke="#06b6d4" strokeWidth="1" strokeDasharray="3 2">
+                     <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="4s" repeatCount="indefinite" />
+                  </circle>
+                  <path d="M-6 -6 H6 V6 H-6 Z M-4 -8 V-6 M4 -8 V-6 M-4 6 V8 M4 6 V8 M-8 -4 H-6 M-8 4 H-6 M6 -4 H8 M6 4 H8" fill="#06b6d4" transform="scale(0.8)"/>
+                  <animateMotion dur="3.5s" repeatCount="indefinite" path="M250 250 L120 380" keyPoints="0;1" keyTimes="0;1" calcMode="linear" />
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3.5s" repeatCount="indefinite" />
+                </motion.g>
+
+                <motion.g>
+                  <circle r="14" fill="#09090b" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="3 2">
+                     <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="4s" repeatCount="indefinite" />
+                  </circle>
+                  <path d="M-6 -6 H6 V6 H-6 Z M-4 -8 V-6 M4 -8 V-6 M-4 6 V8 M4 6 V8 M-8 -4 H-6 M-8 4 H-6 M6 -4 H8 M6 4 H8" fill="#8b5cf6" transform="scale(0.8)"/>
+                  <animateMotion dur="4.5s" repeatCount="indefinite" path="M250 250 L380 380" keyPoints="0;1" keyTimes="0;1" calcMode="linear" />
+                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="4.5s" repeatCount="indefinite" />
+                </motion.g>
+
                 <defs>
-                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#f97316" stopOpacity="0" />
-                    <stop offset="100%" stopColor="#f97316" />
-                  </linearGradient>
-                  <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-                    <stop offset="100%" stopColor="#3b82f6" />
-                  </linearGradient>
-                  <linearGradient id="grad3" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#06b6d4" stopOpacity="0" />
-                    <stop offset="100%" stopColor="#06b6d4" />
-                  </linearGradient>
-                  <linearGradient id="grad4" x1="100%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" stopColor="#22c55e" stopOpacity="0" />
-                    <stop offset="100%" stopColor="#22c55e" />
-                  </linearGradient>
+                  <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#f97316" stopOpacity="0" /><stop offset="100%" stopColor="#f97316" /></linearGradient>
+                  <linearGradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="#3b82f6" stopOpacity="0" /><stop offset="100%" stopColor="#3b82f6" /></linearGradient>
+                  <linearGradient id="grad3" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stopColor="#06b6d4" stopOpacity="0" /><stop offset="100%" stopColor="#06b6d4" /></linearGradient>
+                  <linearGradient id="grad4" x1="100%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" /><stop offset="100%" stopColor="#8b5cf6" /></linearGradient>
                 </defs>
               </svg>
 
-              {/* Central Hub */}
-              <motion.div 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-slate-900 rounded-2xl border border-orange-500/50 shadow-[0_0_40px_rgba(249,115,22,0.3)] z-10 flex items-center justify-center"
-                animate={{ boxShadow: ["0 0 20px rgba(249,115,22,0.3)", "0 0 40px rgba(249,115,22,0.6)", "0 0 20px rgba(249,115,22,0.3)"] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <Zap className="w-10 h-10 text-white" />
-              </motion.div>
+              {/* Central Initialize Button */}
+              <motion.button onClick={scrollToProjects} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#09090b] rounded-full border border-slate-800 z-10 flex flex-col items-center justify-center group cursor-pointer hover:border-orange-500/50 transition-colors" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <div className="absolute inset-0 rounded-full border border-dashed border-slate-700 animate-spin-slow group-hover:border-orange-500/30"></div>
+                <div className="w-full h-full rounded-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.15),transparent_70%)] absolute top-0 left-0 animate-pulse"></div>
+                <Cpu className="w-8 h-8 text-slate-400 group-hover:text-orange-500 transition-colors mb-2" />
+                <span className="text-[10px] font-mono text-slate-500 group-hover:text-orange-400 tracking-wider">INITIALIZE</span>
+              </motion.button>
 
-              {/* Floating Cards */}
-              
-              {/* Card 1: SEO */}
-              <motion.div 
-                animate={{ y: [0, -15, 0] }}
-                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                className="absolute top-[10%] left-[0%] md:-left-[10%] bg-[#0f172a] p-4 rounded-xl border border-slate-700 shadow-xl z-20 w-48"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-orange-500/20 rounded-lg">
-                    <Search className="w-4 h-4 text-orange-400" />
-                  </div>
-                  <span className="font-bold text-white text-xs">SEO Audit</span>
-                </div>
-                <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-orange-500" 
-                    initial={{ width: "0%" }}
-                    animate={{ width: "85%" }}
-                    transition={{ duration: 1.5, delay: 1 }}
-                  />
-                </div>
-                <div className="mt-2 flex justify-between text-[10px] text-slate-400">
-                  <span>Health Score</span>
-                  <span>98/100</span>
-                </div>
-              </motion.div>
-
-              {/* Card 2: Automation */}
-              <motion.div 
-                animate={{ y: [0, 15, 0] }}
-                transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 1 }}
-                className="absolute top-[15%] right-[0%] md:-right-[10%] bg-[#0f172a] p-4 rounded-xl border border-slate-700 shadow-xl z-20 w-52"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-blue-500/20 rounded-lg">
-                    <Bot className="w-4 h-4 text-blue-400" />
-                  </div>
-                  <span className="font-bold text-white text-xs">Auto-Response</span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-[10px] text-slate-400 bg-slate-800/50 p-1.5 rounded">
-                    <div className="w-2 h-2 rounded-full bg-green-500" />
-                    <span>Lead Captured</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-[10px] text-slate-400 bg-slate-800/50 p-1.5 rounded">
-                    <div className="w-2 h-2 rounded-full bg-green-500" />
-                    <span>CRM Updated</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Card 3: Data */}
-              <motion.div 
-                animate={{ y: [0, -10, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 0.5 }}
-                className="absolute bottom-[10%] left-[5%] md:left-[0%] bg-[#0f172a] p-4 rounded-xl border border-slate-700 shadow-xl z-20 w-44"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-cyan-500/20 rounded-lg">
-                    <Database className="w-4 h-4 text-cyan-400" />
-                  </div>
-                  <span className="font-bold text-white text-xs">Data Sync</span>
-                </div>
-                <div className="flex justify-between items-end h-8 gap-1">
-                  {[40, 70, 50, 90, 60].map((h, i) => (
-                    <motion.div 
-                      key={i}
-                      className="w-full bg-cyan-500/50 rounded-t-sm"
-                      initial={{ height: 0 }}
-                      animate={{ height: `${h}%` }}
-                      transition={{ duration: 1, delay: 1 + (i * 0.1) }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Card 4: Web */}
-              <motion.div 
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 1.5 }}
-                className="absolute bottom-[20%] right-[5%] md:right-[0%] bg-[#0f172a] p-4 rounded-xl border border-slate-700 shadow-xl z-20 w-48"
-              >
-                 <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-green-500/20 rounded-lg">
-                    <Globe className="w-4 h-4 text-green-400" />
-                  </div>
-                  <span className="font-bold text-white text-xs">Webhooks</span>
-                </div>
-                <div className="text-[10px] font-mono text-slate-400 bg-black/40 p-2 rounded border border-white/5">
-                  POST /api/v1/lead<br/>
-                  Status: <span className="text-green-400">200 OK</span>
-                </div>
-              </motion.div>
+              {/* Orbiting Cards */}
+              <FloatingCard x="left-[5%] top-[10%]" label="SEO AUDIT" icon={Search} color="orange" progress={98} />
+              <FloatingCard x="right-[5%] top-[15%]" label="AUTOMATION" icon={Bot} color="blue" status={['Lead Captured', 'CRM Updated']} />
+              <FloatingCard x="left-[10%] bottom-[15%]" label="WEBHOOKS" icon={Database} color="cyan" bars={[40, 70, 50, 90, 60]} />
+              <FloatingCard x="right-[5%] bottom-[10%]" label="HTTP_REQ" icon={Globe} color="purple" code="POST /api/v1 200 OK" />
 
             </motion.div>
           </div>

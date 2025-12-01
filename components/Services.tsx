@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Bot, Zap, BarChart, Settings, Database } from 'lucide-react';
-import { Service } from '../types';
+import { Service } from '../types.ts';
 
 const servicesData: Service[] = [
   {
